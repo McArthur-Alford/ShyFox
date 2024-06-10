@@ -11,6 +11,8 @@ Styles for sidebar
 :root{
   --little-gap: calc(var(--margin) / 1.5);
   --bookmarks-hgt: var(--toolbar-item-hgt);
+  --sidebar-collapsed-width: 34px;
+  --sidebar-expanded-width: var(--sdbr-wdt);
 }
 
 /* if sidebar is not hidden, this window is not floating popup and not in fullscreen video */
@@ -93,51 +95,41 @@ Styles for sidebar
 
 */
 
+/* Adjust the sidebar and bookmarks toolbar widths */
 #main-window[titlepreface*="-"]:not([customizing]){
-  --sdbr-real-wdt: 20px;
+  --sdbr-real-wdt: var(--sidebar-expanded-width);
   
-  /* styles for both sidebar and bookmaarks toolbar */
   #sidebar-box,
-  #PersonalToolbar
-  {
+  #PersonalToolbar {
     z-index: 3 !important;
-    
-    width: var(--sdbr-wdt) !important;
-    
+    width: var(--sidebar-collapsed-width) !important;
     padding-top: calc(var(--margin) / 2);
     padding-bottom: calc(var(--margin) / 2);
-    
     left: calc(
       var(--left-margin) 
       + var(--panel-hide-ldg) 
-      - var(--sdbr-wdt)
+      - var(--sidebar-collapsed-width)
     ) !important;
-    
     background-color: transparent !important;
-    
     border-radius: var(--big-rounding) !important;
     
-    /* hover target (invisible box between window edge and panel) */
     &::before{
       content: "";
       position: absolute;
       z-index: -999;
       background-color: var(--debug-col);
-      
       width: 150%;
       height: 100%;
       right: 0px;
       top: 0px;
     }
-    
-    /* make all panel content invisible (it will visible when hover) */
+
     & * {
       transition: var(--transition) !important;
       opacity: 0;
     }
   }
   
-  /* styles for sidebar */
   #sidebar-box{
     height: calc(
       100vh
@@ -147,26 +139,22 @@ Styles for sidebar
       - var(--bottom-margin)
       - var(--margin) * 2
     ) !important;
-    
     top: calc(
       var(--top-margin)
       + var(--margin)
       + var(--bookmarks-hgt) + var(--little-gap)
     );
-    
-    /* indication bar (line on window edge) */
+
     &::after{
       content: "";
       position: absolute;
       transition: var(--transition);
-      
       left: calc(
         100% 
         - var(--panel-hide-ldg) 
         - var(--margin) 
         + var(--hide-bar-padding)
       );
-      
       width: calc(var(--margin) - var(--hide-bar-padding) * 2 );
       height: calc(
         100% 
@@ -174,42 +162,32 @@ Styles for sidebar
         + var(--bookmarks-hgt)
         + var(--little-gap)
       );
-      
       bottom: calc(var(--hide-bar-wdt-pad) / 2);
-      
       border-radius: var(--rounding);
       background-color: var(--bt-col);
       opacity: var(--hide-bar-opct);
     }
   }
-  
-  /* styles for bookmarks */
+
   #PersonalToolbar{
     top: calc(var(--top-margin) + var(--margin));
     margin-left: 0px !important;
     overflow: visible !important;
-
     padding-inline: 0px !important;
-    
-    /* hover target between sidebar and bookmarks toolbar */
+
     &::after{
       content: "";
       z-index: 1;
       position: absolute;
-      
       background-color: var(--debug-col);
       opacity: 1 !important;
-      
       height: calc(var(--little-gap) + 4px);
       bottom: calc(-2px - var(--little-gap));
-      
       width: 150%;
-      
       right: 0px;
     }
   }
 
-  /* show sidebar on hover or focus */
   &:has(
     #sidebar-box:hover,
     #sidebar-box:focus-within,
@@ -217,19 +195,14 @@ Styles for sidebar
     #PersonalToolbar *[open]
   ) {
     #sidebar-box,
-    #PersonalToolbar
-    {
-      opacity: 1 !important;
+    #PersonalToolbar {
+      width: var(--sidebar-expanded-width) !important;
       left: calc(var(--left-margin) + var(--margin)) !important;
-      
       background-color: var(--bg-col) !important;
-      
       border: var(--outline) !important;
       outline: var(--shadow) !important;
-            
-      &::after{opacity: 0}
-      
-      & * {opacity: 1}
+      &::after { opacity: 0 }
+      & * { opacity: 1 }
     }
   }
 }
