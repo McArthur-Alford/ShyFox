@@ -94,7 +94,7 @@ Styles for sidebar
 */
 
 #main-window[titlepreface*="-"]:not([customizing]){
-  --sdbr-real-wdt: 0px;
+  --sdbr-real-wdt: 20px;
   
   /* styles for both sidebar and bookmaarks toolbar */
   #sidebar-box,
