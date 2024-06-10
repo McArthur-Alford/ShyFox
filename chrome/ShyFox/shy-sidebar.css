@@ -23,7 +23,11 @@ Styles for sidebar
 /* hide sidebar splitter */
 #sidebar-splitter { display: none; }
 
-#sidebar-box { border-radius: var(--rounding) !important; }
+#sidebar-box { 
+  border-radius: var(--rounding) !important; 
+  transition: all 200ms ease !important; 
+  overflow: hidden !important;
+}
 
 /* 
 
@@ -35,7 +39,7 @@ Styles for sidebar
 #sidebar-box,
 #PersonalToolbar {
   position: fixed;
-  overflow: visible;
+  overflow: hidden;
   z-index: 2 !important;
 
   min-width: 0px !important;
@@ -46,7 +50,7 @@ Styles for sidebar
   transition: var(--transition) !important;
   background-color: var(--bg-col) !important;
 
-  & > * { transition: var(--transition); !important }
+  & > * { transition: var(--transition) !important; }
 }
 
 /* styles for sidebar */
@@ -213,5 +217,3 @@ Styles for sidebar
     outline: 3px solid red;
     border-radius: var(--big-rounding);
     padding: 10px;
-  }
-}
