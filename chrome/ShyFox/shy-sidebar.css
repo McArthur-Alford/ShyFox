@@ -3,30 +3,27 @@
 Styles for sidebar
 
 --- JUST IMPORTANT THINGS ---------------------------------------------------------------------------------------------------------------------------
+
 */
 
 /* local variables */
 :root {
   --little-gap: calc(var(--margin) / 1.5);
   --bookmarks-hgt: var(--toolbar-item-hgt);
-  --sidebar-collapsed-width: 15px;
-  --sidebar-expanded-width: var(--sdbr-wdt);
+  --sidebar-hover-width: 52px; /* Width when collapsed */
+  --sidebar-visible-width: 320px; /* Width when expanded */
 }
 
 /* if sidebar is not hidden, this window is not floating popup and not in fullscreen video */
 #main-window:not([titlepreface*="-"])[chromehidden=""]:not([inDOMFullscreen="true"]) {
   /* set left margin to sidebar width */
-  --left-margin: var(--sdbr-wdt) !important;
+  --left-margin: var(--sidebar-hover-width) !important;
 }
 
 /* hide sidebar splitter */
-#sidebar-splitter {
-  display: none
-}
+#sidebar-splitter { display: none; }
 
-#sidebar-box {
-  border-radius: var(--rounding) !important;
-}
+#sidebar-box { border-radius: var(--rounding) !important; }
 
 /* 
 
@@ -49,21 +46,14 @@ Styles for sidebar
   transition: var(--transition) !important;
   background-color: var(--bg-col) !important;
 
-  & > * {
-    transition: var(--transition);
-    !important
-  }
+  & > * { transition: var(--transition); !important }
 }
 
 /* styles for sidebar */
 #sidebar-box {
-  top: calc(
-    var(--margin) / 2
-    + var(--bookmarks-hgt)
-  );
-
+  top: calc(var(--margin) / 2 + var(--bookmarks-hgt));
   bottom: var(--margin);
-  width: var(--sdbr-wdt) !important;
+  width: var(--sidebar-hover-width) !important;
 }
 
 /* styles for bookmarks toolbar */
@@ -74,22 +64,15 @@ Styles for sidebar
   border-radius: var(--rounding);
   margin-left: var(--buttonbox-left-wdt);
 
-  width: calc(
-    var(--sdbr-wdt)
-    - var(--buttonbox-left-wdt)
-  ) !important;
+  width: calc(var(--sidebar-hover-width) - var(--buttonbox-left-wdt)) !important;
   padding-top: 3px !important;
   padding-bottom: 3px !important;
 
-  &[collapsed="true"] {
-    display: none
-  }
+  &[collapsed="true"] { display: none; }
 }
 
 /* remove space reserved for bookmarks toolbar if it hidden */
-#main-window:has(
-    #PersonalToolbar[collapsed="true"]
-  ) {
+#main-window:has(#PersonalToolbar[collapsed="true"]) {
   --bookmarks-hgt: 0px;
   --little-gap: 0px;
 }
@@ -100,24 +83,20 @@ Styles for sidebar
 
 */
 
-/* Adjust the sidebar and bookmarks toolbar widths */
 #main-window[titlepreface*="-"]:not([customizing]) {
-  --sdbr-real-wdt: var(--sidebar-expanded-width);
-
+  --sidebar-hover-width: 52px;
+  
+  /* styles for both sidebar and bookmarks toolbar */
   #sidebar-box,
   #PersonalToolbar {
     z-index: 3 !important;
-    width: var(--sidebar-collapsed-width) !important;
+    width: var(--sidebar-hover-width) !important;
     padding-top: calc(var(--margin) / 2);
     padding-bottom: calc(var(--margin) / 2);
-    left: calc(
-      var(--left-margin)
-      + var(--panel-hide-ldg)
-      - var(--sidebar-collapsed-width)
-    ) !important;
-    background-color: transparent !important;
+    left: 0 !important;
+    background-color: var(--bg-col) !important;
     border-radius: var(--big-rounding) !important;
-
+    
     &::before {
       content: "";
       position: absolute;
@@ -128,58 +107,39 @@ Styles for sidebar
       right: 0px;
       top: 0px;
     }
-
+    
     & * {
       transition: var(--transition) !important;
-      opacity: 0;
+      opacity: 1;
     }
   }
-
+  
+  /* styles for sidebar */
   #sidebar-box {
-    height: calc(
-      100vh
-      - var(--bookmarks-hgt)
-      - var(--little-gap)
-      - var(--top-margin)
-      - var(--bottom-margin)
-      - var(--margin) * 2
-    ) !important;
-    top: calc(
-      var(--top-margin)
-      + var(--margin)
-      + var(--bookmarks-hgt) + var(--little-gap)
-    );
-
+    height: calc(100vh - var(--bookmarks-hgt) - var(--little-gap) - var(--top-margin) - var(--bottom-margin) - var(--margin) * 2) !important;
+    top: calc(var(--top-margin) + var(--margin) + var(--bookmarks-hgt) + var(--little-gap));
+    
     &::after {
       content: "";
       position: absolute;
       transition: var(--transition);
-      left: calc(
-        100%
-        - var(--panel-hide-ldg)
-        - var(--margin)
-        + var(--hide-bar-padding)
-      );
+      left: calc(100% - var(--panel-hide-ldg) - var(--margin) + var(--hide-bar-padding));
       width: calc(var(--margin) - var(--hide-bar-padding) * 2);
-      height: calc(
-        100%
-        - var(--hide-bar-wdt-pad)
-        + var(--bookmarks-hgt)
-        + var(--little-gap)
-      );
+      height: calc(100% - var(--hide-bar-wdt-pad) + var(--bookmarks-hgt) + var(--little-gap));
       bottom: calc(var(--hide-bar-wdt-pad) / 2);
       border-radius: var(--rounding);
       background-color: var(--bt-col);
       opacity: var(--hide-bar-opct);
     }
   }
-
+  
+  /* styles for bookmarks */
   #PersonalToolbar {
     top: calc(var(--top-margin) + var(--margin));
     margin-left: 0px !important;
     overflow: visible !important;
     padding-inline: 0px !important;
-
+    
     &::after {
       content: "";
       z-index: 1;
@@ -192,26 +152,19 @@ Styles for sidebar
       right: 0px;
     }
   }
-
-  &:has(
-    #sidebar-box:hover,
-    #sidebar-box:focus-within,
-    #PersonalToolbar:hover,
-    #PersonalToolbar *[open]
-  ) {
+  
+  /* expand sidebar on hover or focus */
+  &:has(#sidebar-box:hover, #sidebar-box:focus-within, #PersonalToolbar:hover, #PersonalToolbar *[open]) {
     #sidebar-box,
     #PersonalToolbar {
-      width: var(--sidebar-expanded-width) !important;
-      left: calc(var(--left-margin) + var(--margin)) !important;
+      max-width: var(--sidebar-visible-width) !important;
+      opacity: 1 !important;
+      left: 0 !important;
       background-color: var(--bg-col) !important;
       border: var(--outline) !important;
       outline: var(--shadow) !important;
-      &::after {
-        opacity: 0
-      }
-      & * {
-        opacity: 1
-      }
+      &::after { opacity: 0; }
+      & * { opacity: 1; }
     }
   }
 }
@@ -227,13 +180,10 @@ Styles for sidebar
     top: 65px !important;
     left: 20px !important;
     margin-left: 0px !important;
-
     border-radius: var(--big-rounding) !important;
   }
-
-  #bookmarks-toolbar-placeholder .toolbarbutton-text {
-    display: none !important;
-  }
+  
+  #bookmarks-toolbar-placeholder .toolbarbutton-text { display: none !important; }
 }
 
 /*
@@ -243,40 +193,25 @@ Styles for sidebar
 */
 
 /* hide sidebar button on toolbar and sidebar header when Sidebery opened */
-#main-window:has(
-  #sidebar-box:not([hidden])[sidebarcommand*="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"]
-) {
-  #sidebar-header,
-  #sidebar-button {
-    display: none
-  }
+#main-window:has(#sidebar-box:not([hidden])[sidebarcommand*="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"]) { 
+  #sidebar-header, #sidebar-button { display: none; } 
 }
 
 /* color the sidebar button red */
-#sidebar-button .toolbarbutton-icon {
-  background-color: red !important;
-}
+#sidebar-button .toolbarbutton-icon { background-color: red !important; }
 
 /* notification when Sidebery is not opened */
-#main-window:has(
-  #sidebar-box[hidden="true"],
-  #sidebar-box:not([sidebarcommand*="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"])
-) {
+#main-window:has(#sidebar-box[hidden="true"], #sidebar-box:not([sidebarcommand*="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"])) {
   #browser::before {
     content: "Open Sidebery!";
     position: fixed;
     z-index: 9999;
-
     font-weight: bold;
-
     top: calc(var(--margin) + var(--toolbar-item-hgt));
     left: calc(var(--margin) * 2);
-
     background-color: #252525;
     outline: 3px solid red;
-
     border-radius: var(--big-rounding);
     padding: 10px;
   }
 }
-
