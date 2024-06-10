@@ -9,7 +9,7 @@ Styles for sidebar
 :root {
   --little-gap: calc(var(--margin) / 1.5);
   --bookmarks-hgt: var(--toolbar-item-hgt);
-  --sidebar-collapsed-width: 34px;
+  --sidebar-collapsed-width: 15px;
   --sidebar-expanded-width: var(--sdbr-wdt);
 }
 
